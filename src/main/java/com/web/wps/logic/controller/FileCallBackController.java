@@ -14,10 +14,7 @@ import org.springframework.web.multipart.MultipartFile;
 import javax.servlet.http.HttpServletRequest;
 import java.util.*;
 
-/**
- * @author zm
- * 文件相关回调接口
- */
+
 @RestController
 @RequestMapping("v1/3rd/file")
 public class FileCallBackController extends BaseController {

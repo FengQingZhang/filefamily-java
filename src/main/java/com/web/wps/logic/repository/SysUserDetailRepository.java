@@ -8,7 +8,7 @@ import com.web.wps.logic.entity.SysUserDetail;
 
 public interface SysUserDetailRepository extends JpaRepository<SysUserDetail,Integer>{
 	
-	@Query(nativeQuery = true, value = "select * from user where username=:username and del_flag=0")
+	@Query(nativeQuery = true, value = "select * from w_user_t where username=:username and del_flag=0")
 	public SysUserDetail findByUserName(@Param("username")String username);
 
 }
