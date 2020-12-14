@@ -16,12 +16,12 @@ public class LoginAuthProvider implements AuthenticationProvider{
 	
 	
 	@Override
-	public Authentication authenticate(Authentication authen) throws AuthenticationException {
+	public Authentication authenticate(Authentication auth) throws AuthenticationException {
 		// TODO Auto-generated method stub
 		//获取用户名
-		String userName=authen.getName();
+		String userName=auth.getName();
 		//获取密码
-		String password=(String) authen.getCredentials();
+		String password=(String) auth.getCredentials();
 		
 		
 		
