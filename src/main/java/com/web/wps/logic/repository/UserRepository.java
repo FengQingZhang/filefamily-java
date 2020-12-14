@@ -8,5 +8,7 @@ import java.util.List;
 public interface UserRepository extends BaseRepository<UserEntity, String> {
 
     List<UserEntity> findByIdIn(List<String> id);
+    
+    
 
 }

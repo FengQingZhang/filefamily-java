@@ -12,5 +12,6 @@ public class FileReqDTO {
     private String id;
     private int offset = 0;
     private int count;
+	
 
 }
