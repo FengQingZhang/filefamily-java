@@ -5,6 +5,8 @@ import lombok.Data;
 import lombok.EqualsAndHashCode;
 import org.hibernate.annotations.GenericGenerator;
 
+import java.util.Date;
+
 import javax.persistence.*;
 
 @Data
@@ -23,9 +25,17 @@ public class UserEntity extends BaseEntity {
     @GenericGenerator(name = "idGenerator", strategy = "uuid")
     @GeneratedValue(generator = "idGenerator")
     @Column(length = 50)
-    private String id;
+    private Integer id;
+    private String username;
+    private String password; 
     private String name;
     @Column(name = "avatar_url")
     private String avatar_url;
+    private String phone;
+    private String email;
+    private String create_by;
+    private Date create_date;
+    private String update_by;
+    private Date update_date;
 
 }
