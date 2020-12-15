@@ -28,6 +28,12 @@ spring:
     multipart:
       maxFileSize: 100MB
       maxRequestSize: 200MB
+  security:
+    oauth2:
+      resourceserver:
+        jwt:
+          issuer-uri:
+          jwk-set-uri:
 #wps convert
 wps:
   domain: 
@@ -58,4 +64,8 @@ qn:
   bucket:
   disk-name:
   url:
-    
+
+jwt:
+  secret: ffjaksdfjak
+  expiration: 3600000 #过期时间
+  header:  JWTHeaderName
