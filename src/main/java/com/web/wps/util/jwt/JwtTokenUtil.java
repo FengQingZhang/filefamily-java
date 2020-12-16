@@ -26,10 +26,11 @@ public class JwtTokenUtil {
      * @param
      * @return
      */
-    public String generateToken(UserDetails userDetails){
+    public String generateToken(UserDetails userDetails,String roles){
         Map<String,Object> claims=new HashMap<>();
         claims.put("sub",userDetails.getUsername());
         claims.put("create",new Date());
+        claims.put("role", roles);
         return generateToken(claims);
     }
 

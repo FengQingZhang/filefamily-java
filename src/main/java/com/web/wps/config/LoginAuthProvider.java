@@ -71,10 +71,11 @@ public class LoginAuthProvider implements AuthenticationProvider{
 		return new UsernamePasswordAuthenticationToken(userDetail,password,userDetail.getAuthorities());
 	}
 
+	// supports函数用来指明该Provider是否适用于该类型的认证，如果不合适，则寻找另一个Provider进行验证处理。
 	@Override
-	public boolean supports(Class<?> arg0) {
+	public boolean supports(Class<?> authentication) {
 		// TODO Auto-generated method stub
-		return arg0.equals(UsernamePasswordAuthenticationToken.class);
+		return authentication.equals(UsernamePasswordAuthenticationToken.class);
 	}
 
 }

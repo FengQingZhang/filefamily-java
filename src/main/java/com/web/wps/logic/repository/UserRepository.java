@@ -14,7 +14,7 @@ public interface UserRepository extends BaseRepository<UserEntity, String> {
     List<UserEntity> findByIdIn(List<String> id);
     
     
-	@Query(nativeQuery = true, value = "select * from w_user_t where username=:username and del_flag=0")
+	@Query(nativeQuery = true, value = "select * from w_user_t where username=:username")
 	public UserEntity findByUserName(@Param("username")String username);
 	/**
 	 * 根据用户id查询权限
