@@ -28,7 +28,7 @@ public class SysUserDetailServiceImpl implements UserDetailsService{
 	public UserDetails loadUserByUsername(String userString) throws UsernameNotFoundException {
 		// 根据用户名查询用户信息
 		UserEntity user=userRepository.findByUserName(userString);
-		if(user==null){
+		if(user!=null){
 			SysUserDetail sysUserDetail=new SysUserDetail();
 			sysUserDetail.setId(user.getId());
 			sysUserDetail.setUsername(userString);
