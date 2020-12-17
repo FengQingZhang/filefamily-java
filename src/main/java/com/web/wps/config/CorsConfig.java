@@ -11,7 +11,7 @@ import org.springframework.web.filter.CorsFilter;
 import org.springframework.web.servlet.config.annotation.CorsRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurerAdapter;
 
-@Configuration
+//@Configuration
 public class CorsConfig extends WebMvcConfigurerAdapter {
 	
 	private CorsConfiguration buildconfig(){
@@ -23,7 +23,7 @@ public class CorsConfig extends WebMvcConfigurerAdapter {
 		return corsConfig;
 	}
 	
-	@Bean
+	//@Bean
 	public CorsFilter corsFilter(){
 		return new CorsFilter(new CorsConfigurationSource() {
 			
