@@ -435,7 +435,7 @@ public class FileService extends BaseService<FileEntity, String> {
      * 获取文件列表--分页
      */
     public Page<FileListDTO> getFileListByPage(com.web.wps.base.Page page) {
-        PageRequest pages = new PageRequest(page.getPage() - 1, page.getSize());
+        PageRequest pages = PageRequest.of((page.getPage() - 1),page.getSize());
         return this.getRepository().getAllFileByPage(pages);
     }
 

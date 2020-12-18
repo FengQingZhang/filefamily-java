@@ -33,5 +33,5 @@ public class SysRole {
 	@Column(name = "update_by")
 	private String update_by;
 	@Column(name = "del_flag")
-	private String del_flag;
+	private Integer del_flag;
 }

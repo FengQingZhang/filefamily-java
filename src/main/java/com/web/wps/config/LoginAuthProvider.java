@@ -55,6 +55,7 @@ public class LoginAuthProvider implements AuthenticationProvider{
 		}
 		
 		BCryptPasswordEncoder passwordEncoder=new BCryptPasswordEncoder();
+		System.out.println(passwordEncoder.encode(password));
 		if(!passwordEncoder.matches(password,userDetail.getPassword())){
 			throw new BadCredentialsException("密码错误请重新输入");
 		}
