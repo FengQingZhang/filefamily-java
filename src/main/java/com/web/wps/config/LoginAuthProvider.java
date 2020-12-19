@@ -1,6 +1,7 @@
 package com.web.wps.config;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.AccountExpiredException;
@@ -62,9 +63,9 @@ public class LoginAuthProvider implements AuthenticationProvider{
 		
 		//查询用户权限
 		List<GrantedAuthority> authorities =new ArrayList<>();
-		List<SysRole> roles=sysUserDetailServiceImpl.getRoleByUserId(userDetail.getId());
-		for (SysRole one:roles) {
-			SimpleGrantedAuthority authority=new SimpleGrantedAuthority(one.getCode());
+		List<Map<String,Object>> roles=sysUserDetailServiceImpl.getRoleByUserId(userDetail.getId());
+		for (Map<String,Object> one:roles) {
+			SimpleGrantedAuthority authority=new SimpleGrantedAuthority((String) one.get("code"));
 			authorities.add(authority);
 		}
 		userDetail.setAuthorities(authorities);

@@ -93,61 +93,14 @@ public class SysSecurityConfig extends WebSecurityConfigurerAdapter {
         return source;
     }
 
-    @Bean
+	/**
+	 * 在
+	 * @return
+	 * @throws Exception
+	 */
+	@Bean
     CustomAuthenticatopnFilter customAuthenticationFilter() throws Exception {
         CustomAuthenticatopnFilter filter = new CustomAuthenticatopnFilter();
-        filter.setAuthenticationSuccessHandler(new AuthenticationSuccessHandler() {
-            @Override
-            public void onAuthenticationSuccess(HttpServletRequest req, HttpServletResponse response, Authentication authentication) throws IOException, ServletException {
-        		SysUserDetail userDetails=(SysUserDetail)authentication.getPrincipal();
-        		Collection<? extends GrantedAuthority> authorities=userDetails.getAuthorities();
-        		//创建Token
-        		String token=jwtTokenUtil.generateToken(userDetails,authorities.toString());
-        		//设置编码 防止乱码问题
-        		response.setCharacterEncoding("UTF-8");
-        		response.setContentType("application/json;charset=utf-8");
-        		//在请求头里返回创建成功的token
-        		//设置请求头为带有"JWTHeaderName" 
-        		response.setHeader(jwtTokenUtil.getHeader(),token);
-        		//处理编码方式  防止中文乱码
-        		response.setContentType("text/json;charset=uft-8");
-        		//将反馈塞到HttpServletResponse中返回给前台
-        		PrintWriter out=response.getWriter();
-        		out.write(JSON.toJSONString("登录成功"));
-        		out.flush();
-        		out.close();
-            }
-        });
-        filter.setAuthenticationFailureHandler(new AuthenticationFailureHandler() {
-            @Override
-            public void onAuthenticationFailure(HttpServletRequest req, HttpServletResponse resp, AuthenticationException failed) throws IOException, ServletException {
-            	String returnData="";
-        		//账号过期
-        		if (failed instanceof AccountExpiredException) {
-        			returnData="账号过期";
-        		}else if(failed instanceof BadCredentialsException){
-        			returnData="密码错误";
-        		}else if(failed instanceof CredentialsExpiredException){
-        			returnData="密码过期";
-        		}else if(failed instanceof DisabledException){
-        			returnData="账号不可用";
-        		}else if(failed instanceof LockedException){
-        			returnData="账号锁定";
-        		}else if(failed instanceof InternalAuthenticationServiceException){
-        			returnData="用户不存在";
-        		}else{
-        			returnData="未知异常";
-        		}
-        		
-        		//处理编码方式，防止中文乱码
-        		resp.setContentType("text/json;charset=utf-8");
-        		//将反馈塞到HttpServletResponse中返回给前台
-        		PrintWriter out=resp.getWriter();
-        		out.write(JSON.toJSONString(returnData));
-        		out.flush();
-        		out.close();
-            }
-        });
         filter.setAuthenticationManager(authenticationManagerBean());
         return filter;
     }
@@ -161,7 +114,6 @@ public class SysSecurityConfig extends WebSecurityConfigurerAdapter {
     			Map<String,Object> map =new HashMap<String, Object>();
     			map.put("code", "200");
     			map.put("msg","ok");
-    			response.setContentType("application/json;charset=utf-8");
     			SysUserDetail userDetails=(SysUserDetail)authentication.getPrincipal();
         		Collection<? extends GrantedAuthority> authorities=userDetails.getAuthorities();
         		//创建Token
@@ -172,8 +124,7 @@ public class SysSecurityConfig extends WebSecurityConfigurerAdapter {
         		//在请求头里返回创建成功的token
         		//设置请求头为带有"JWTHeaderName" 
         		response.setHeader(jwtTokenUtil.getHeader(),token);
-        		//处理编码方式  防止中文乱码
-        		response.setContentType("text/json;charset=uft-8");
+			    response.setContentType("text/json;charset=utf-8");
     			PrintWriter out=response.getWriter();
     			out.write(JSON.toJSONString(map));
     			out.flush();

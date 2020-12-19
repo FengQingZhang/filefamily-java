@@ -1,6 +1,7 @@
 package com.web.wps.logic.service;
 
 import java.util.List;
+import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -43,7 +44,7 @@ public class SysUserDetailServiceImpl implements UserDetailsService{
 		throw new UsernameNotFoundException("该账户不存在");
 	}
 	
-	public List<SysRole> getRoleByUserId(int userId){
+	public List<Map<String,Object>> getRoleByUserId(int userId){
 		
 		return userRepository.getRoleByUserId(userId);
 		
