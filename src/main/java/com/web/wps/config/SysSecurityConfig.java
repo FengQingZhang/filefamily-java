@@ -1,34 +1,22 @@
 package com.web.wps.config;
 
 import com.alibaba.fastjson.JSON;
-import com.fasterxml.jackson.databind.ObjectMapper;
 import com.web.wps.config.filter.CustomAuthenticatopnFilter;
+import com.web.wps.config.filter.JwTAuthenticationFilter;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
-import org.springframework.security.authentication.AccountExpiredException;
-import org.springframework.security.authentication.AuthenticationManager;
-import org.springframework.security.authentication.BadCredentialsException;
-import org.springframework.security.authentication.CredentialsExpiredException;
-import org.springframework.security.authentication.DisabledException;
-import org.springframework.security.authentication.InternalAuthenticationServiceException;
-import org.springframework.security.authentication.LockedException;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
-import org.springframework.security.config.annotation.web.builders.WebSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
-import org.springframework.security.core.Authentication;
-import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.web.authentication.AuthenticationFailureHandler;
 import org.springframework.security.web.authentication.AuthenticationSuccessHandler;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 import org.springframework.web.cors.CorsConfiguration;
-import org.springframework.web.cors.CorsUtils;
 import org.springframework.web.cors.CorsConfigurationSource;
 import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 
-import com.web.wps.config.filter.JwTAuthenticationFilter;
 import com.web.wps.logic.entity.SysUserDetail;
 import com.web.wps.logic.service.SysUserDetailServiceImpl;
 import com.web.wps.util.jwt.JwtTokenUtil;
@@ -53,6 +41,9 @@ public class SysSecurityConfig extends WebSecurityConfigurerAdapter {
 	@Autowired
 	private JwtTokenUtil jwtTokenUtil;
 
+	@Autowired
+	private JwTAuthenticationFilter jwTAuthenticationFilter;
+
     @Override
     protected void configure(AuthenticationManagerBuilder auth) throws Exception {
         // TODO Auto-generated method stub
@@ -76,7 +67,8 @@ public class SysSecurityConfig extends WebSecurityConfigurerAdapter {
                 ;
                 /*.and()
                 .addFilter(new JwTAuthenticationFilter(authenticationManager()))*/;
-                http.addFilterAfter(customAuthenticationFilter(), UsernamePasswordAuthenticationFilter.class)
+                http.addFilterBefore(jwTAuthenticationFilter,UsernamePasswordAuthenticationFilter.class).
+						addFilterAfter(customAuthenticationFilter(), UsernamePasswordAuthenticationFilter.class)
                 /*.addFilter(new JwTAuthenticationFilter(authenticationManager()))*/;
         ;
     }

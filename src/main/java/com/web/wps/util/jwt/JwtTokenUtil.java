@@ -17,9 +17,9 @@ import java.util.Map;
 @ConfigurationProperties(prefix = "jwt")
 @Component
 public class JwtTokenUtil {
-    private String secret;
-    private Long expiration;
-    private String header;
+    private  String secret;
+    private  Long expiration;
+    private  String header;
 
     /**
      * 生成令牌
@@ -52,7 +52,7 @@ public class JwtTokenUtil {
      * @param token 令牌
      * @return 用户名
      */
-    public String getUsernameFromToken(String token){
+    public  String getUsernameFromToken(String token){
         String username;
         try {
             Claims claims=getClaimsFromToken(token);
