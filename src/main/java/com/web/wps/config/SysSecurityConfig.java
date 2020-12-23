@@ -106,6 +106,7 @@ public class SysSecurityConfig extends WebSecurityConfigurerAdapter {
     			Map<String,Object> map =new HashMap<String, Object>();
     			map.put("code", "200");
     			map.put("msg","ok");
+    			map.put("state","ok");
     			SysUserDetail userDetails=(SysUserDetail)authentication.getPrincipal();
         		Collection<? extends GrantedAuthority> authorities=userDetails.getAuthorities();
         		//创建Token
@@ -136,6 +137,7 @@ public class SysSecurityConfig extends WebSecurityConfigurerAdapter {
     				Map<String,Object> map = new HashMap<String, Object>();
     				map.put("code", "500");
     				map.put("msg", exception.getMessage());
+			        map.put("state","fail");
     				//设置返回请求头
     				response.setContentType("application/json;charset=utf-8");
     				PrintWriter out =response.getWriter();

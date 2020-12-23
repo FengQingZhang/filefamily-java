@@ -27,6 +27,8 @@ public interface UserRepository extends BaseRepository<UserEntity, String> {
 	 */
 	@Query(nativeQuery = true,value = "select r.* from  sys_role_user ru left join w_user_t u on ru.user_id = u.id left join sys_role r on ru.role_id = r.id where u.id=:userId ")
 	List<Map<String,Object>> getRoleByUserId(@Param("userId")int userId);
-    
+
+//	List<String> rolesCods=
+
 
 }
