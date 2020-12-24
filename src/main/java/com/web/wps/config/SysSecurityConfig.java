@@ -57,6 +57,7 @@ public class SysSecurityConfig extends WebSecurityConfigurerAdapter {
         http.cors().and().csrf().disable();//跨域设置
         http.authorizeRequests()
                 .antMatchers("/login").permitAll()
+				.antMatchers("/checkLogin").permitAll()
                 .antMatchers("/image/**").permitAll()//静态资源访问无需认证
                 .antMatchers("/admdin/*").hasAnyRole("ROLE_ADMIN")//admin开头的请求需要admin权限
                 .anyRequest().authenticated()//默认其他请求都需要认证

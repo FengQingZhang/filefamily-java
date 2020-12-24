@@ -1,9 +1,15 @@
 package com.web.wps.logic.service;
 
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import com.alibaba.fastjson.JSONObject;
+import com.alibaba.fastjson.JSONPObject;
+import com.web.wps.util.jwt.JwtTokenUtil;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
@@ -15,14 +21,21 @@ import com.web.wps.logic.entity.UserEntity;
 import com.web.wps.logic.entity.UserState;
 import com.web.wps.logic.repository.UserRepository;
 import com.web.wps.logic.repository.UserStateRepository;
+import org.springframework.util.StringUtils;
+
+import javax.annotation.Resource;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 
 @Service
 public class SysUserDetailServiceImpl implements UserDetailsService{
 	
-	@Autowired
+	@Resource
 	private UserRepository userRepository;
-	@Autowired
+	@Resource
 	private UserStateRepository stateRepository;
+	@Resource
+	private JwtTokenUtil jwtTokenUtil;
 	
 
 	@Override
@@ -48,6 +61,29 @@ public class SysUserDetailServiceImpl implements UserDetailsService{
 		
 		return userRepository.getRoleByUserId(userId);
 		
+	}
+
+	public JSONObject checkLogin(HttpServletRequest request,HttpServletResponse response){
+		JSONObject jsonObject = new JSONObject();
+		String tokenHeader=request.getHeader(jwtTokenUtil.getHeader());
+		if(!StringUtils.isEmpty(tokenHeader)){
+			//根据username加载权限
+			String username=jwtTokenUtil.getUsernameFromToken(tokenHeader);
+			if(username!=null&& SecurityContextHolder.getContext().getAuthentication()==null){
+				UserDetails userDetails=loadUserByUsername(username);
+				if (jwtTokenUtil.validateToken(tokenHeader,userDetails)){
+					jsonObject.put("state","ok");
+					jsonObject.put("msg","已登录");
+				}else {
+					jsonObject.put("state","fail");
+					jsonObject.put("msg","登录状态过期请重新登录");
+				}
+			}
+		}else {
+			jsonObject.put("state","fail");
+			jsonObject.put("msg","请您登录后再进行操作");
+		}
+		return jsonObject;
 	}
 
 
