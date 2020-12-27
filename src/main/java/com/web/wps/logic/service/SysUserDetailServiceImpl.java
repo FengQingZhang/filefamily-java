@@ -69,7 +69,7 @@ public class SysUserDetailServiceImpl implements UserDetailsService{
 		if(!StringUtils.isEmpty(tokenHeader)){
 			//根据username加载权限
 			String username=jwtTokenUtil.getUsernameFromToken(tokenHeader);
-			if(username!=null&& SecurityContextHolder.getContext().getAuthentication()==null){
+			if(username!=null&& SecurityContextHolder.getContext().getAuthentication()!=null){
 				UserDetails userDetails=loadUserByUsername(username);
 				if (jwtTokenUtil.validateToken(tokenHeader,userDetails)){
 					jsonObject.put("state","ok");

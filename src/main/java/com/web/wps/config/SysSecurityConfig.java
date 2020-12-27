@@ -13,6 +13,8 @@ import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.web.authentication.AuthenticationFailureHandler;
 import org.springframework.security.web.authentication.AuthenticationSuccessHandler;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
+import org.springframework.security.web.header.Header;
+import org.springframework.security.web.header.writers.StaticHeadersWriter;
 import org.springframework.web.cors.CorsConfiguration;
 import org.springframework.web.cors.CorsConfigurationSource;
 import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
@@ -26,6 +28,8 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.lang.reflect.Array;
+import java.util.Arrays;
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.Map;
@@ -55,6 +59,13 @@ public class SysSecurityConfig extends WebSecurityConfigurerAdapter {
     @Override
     protected void configure(HttpSecurity http) throws Exception {
         http.cors().and().csrf().disable();//跨域设置
+//		返回浏览器的Respone的Header也需要添加跨域配置。
+		http.headers().addHeaderWriter(new StaticHeadersWriter(Arrays.asList(
+				//支持所有源的访问
+//				new Header("Access-control-Allow-Origin","*"),
+				//使ajax请求能够取到header中的jwt token信息
+				new Header("Access-Control-Expose-Headers",jwtTokenUtil.getHeader())
+		)));
         http.authorizeRequests()
                 .antMatchers("/login").permitAll()
 				.antMatchers("/checkLogin").permitAll()
@@ -81,8 +92,15 @@ public class SysSecurityConfig extends WebSecurityConfigurerAdapter {
     @Bean
     CorsConfigurationSource corsConfigurationSource() {
         final UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
+		CorsConfiguration cors=new CorsConfiguration();
+		cors.setAllowCredentials(true);
+	    cors.setAllowedOrigins(Arrays.asList("*"));
+		cors.setAllowedMethods(Arrays.asList("GET","POST","DELETE","PUT","UPDATE"));
+		cors.setAllowedHeaders(Arrays.asList("*"));
+		cors.addExposedHeader(jwtTokenUtil.getHeader());
         // 注册跨域配置
-        source.registerCorsConfiguration("/**", new CorsConfiguration().applyPermitDefaultValues());
+		// 也可以使用CorsConfiguration 类的 applyPermitDefaultValues()方法使用默认配置
+		source.registerCorsConfiguration("/**",cors.applyPermitDefaultValues());
         return source;
     }
 
